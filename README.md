@@ -7,7 +7,7 @@
 
 ---
 
-## 🌌 1. Project Overview & Objectives
+##  1. Project Overview & Objectives
 
 **QubitLab** is an educational quantum simulator designed for first-year B.Tech students in VLSI Quantum Technology. It visually and mathematically demonstrates the core principles of quantum mechanics on a single qubit:
 
@@ -19,7 +19,7 @@
 
 ---
 
-## ⚡ 2. Key Features
+##  2. Key Features
 
 ### A. 3D WebGL Bloch Sphere
 - Built with **Three.js** and **OrbitControls**.
