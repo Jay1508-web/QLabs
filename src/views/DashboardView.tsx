@@ -158,6 +158,136 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
+      {/* Choose Simulation Mode Section (Feature 1) */}
+      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-cyan-500/25 shadow-2xl flex flex-col gap-6 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <span className="text-xs uppercase font-mono tracking-wider font-semibold text-cyan-400 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              Interactive Simulation Hub
+            </span>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-white mt-0.5">
+              Choose Simulation Mode
+            </h2>
+          </div>
+          <p className="text-xs text-slate-400 max-w-md">
+            Select between Quantum State Superposition in Hilbert Space and the Classical Superposition Theorem in Electrical Circuits.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Option 1: Normal Simulation (Quantum Superposition) */}
+          <div
+            onClick={() => onNavigate('simulator')}
+            className="group relative rounded-2xl p-6 bg-slate-950/70 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-cyan-500/10 flex flex-col justify-between gap-5"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-400/30">
+                  <Atom className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '12s' }} />
+                  Option 1: Normal Simulation
+                </span>
+                <span className="text-xs font-mono text-cyan-400 font-semibold group-hover:translate-x-1 transition-transform">
+                  Launch ➔
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+                Quantum Superposition Simulator
+              </h3>
+
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Explore a single qubit in state |ψ⟩ = α|0⟩ + β|1⟩ on an interactive 3D Bloch sphere. 
+                Apply unitary gates (Hadamard, Pauli-X, Y, Z), observe 50/50 probability amplitudes, 
+                and simulate Copenhagen wavefunction collapse with up to 5,000 Monte Carlo shots.
+              </p>
+
+              {/* Feature Tags */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  3D WebGL Bloch Sphere
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Unitary Gates (H, X, Z)
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Born Rule Measurement
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Monte Carlo Shots
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate('simulator');
+              }}
+              className="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-md shadow-cyan-500/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Orbit className="w-4 h-4" />
+              <span>Open Normal Quantum Simulation</span>
+            </button>
+          </div>
+
+          {/* Option 2: Circuit Simulation (Superposition Theorem) */}
+          <div
+            onClick={() => onNavigate('circuit')}
+            className="group relative rounded-2xl p-6 bg-slate-950/70 border border-amber-500/30 hover:border-amber-400 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-amber-500/10 flex flex-col justify-between gap-5"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-amber-500/10 text-amber-300 border border-amber-400/30">
+                  <Zap className="w-3.5 h-3.5" />
+                  Option 2: Circuit Simulation • New
+                </span>
+                <span className="text-xs font-mono text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">
+                  Launch ➔
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                Electrical Circuit Superposition Simulator
+              </h3>
+
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Demonstrate the fundamental Superposition Theorem in a two-source linear DC network (10V & 5V) 
+                across resistors (1kΩ, 2kΩ, 1kΩ load). Observe animated current flow, deactivate sources into short-circuits, 
+                and verify that VL = V1 + V2 = 4V + 1V = 5V.
+              </p>
+
+              {/* Feature Tags */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Dual DC Sources (10V & 5V)
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Animated Current Flow
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  Mode A, B & C Selection
+                </span>
+                <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
+                  VL = 4V + 1V = 5V Verified
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate('circuit');
+              }}
+              className="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-slate-950 shadow-md shadow-amber-500/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Zap className="w-4 h-4 fill-current" />
+              <span>Open Circuit Superposition Simulation</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1: 3D Bloch Sphere Simulator */}

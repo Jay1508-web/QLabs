@@ -9,6 +9,7 @@ import { MeasurementLabView } from './views/MeasurementLabView';
 import { ProbabilityAnalysisView } from './views/ProbabilityAnalysisView';
 import { LearnQuantumView } from './views/LearnQuantumView';
 import { AboutProjectView } from './views/AboutProjectView';
+import { CircuitSimulatorView } from './views/CircuitSimulatorView';
 import { Atom } from 'lucide-react';
 
 export function App() {
@@ -115,6 +116,12 @@ export function App() {
 
         {activeTab === 'about' && (
           <AboutProjectView />
+        )}
+
+        {activeTab === 'circuit' && (
+          <CircuitSimulatorView
+            onBackToHome={() => setActiveTab('dashboard')}
+          />
         )}
       </main>
 

@@ -102,3 +102,30 @@
 .animate-wave-subtle {
   animation: waveOscillate 4s ease-in-out infinite;
 }
+
+@keyframes currentFlow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes currentFlowReverse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 24;
+  }
+}
+
+.animate-current-flow {
+  animation: currentFlow 0.8s linear infinite;
+}
+
+.animate-current-flow-reverse {
+  animation: currentFlowReverse 0.8s linear infinite;
+}
+

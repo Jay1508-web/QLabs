@@ -11,7 +11,8 @@ import {
   BookOpen, 
   Info, 
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Zap
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -30,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navItems: { id: ActiveTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'simulator', label: 'Qubit Simulator', icon: Orbit },
+    { id: 'circuit', label: 'Circuit Simulator', icon: Zap },
     { id: 'gates', label: 'Quantum Gates', icon: Cpu },
     { id: 'measurement', label: 'Measurement Lab', icon: Gauge },
     { id: 'probability', label: 'Probability Analysis', icon: BarChart3 },
@@ -90,13 +92,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Right Status Badge & Reset Button */}
           <div className="flex items-center gap-2.5">
             {/* Quick State Pill */}
-            <div className="hidden sm:flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 font-mono text-xs">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="text-slate-400">State:</span>
-              <span className="text-cyan-300 font-semibold max-w-[120px] truncate" title={formatDiracState(currentState, 3)}>
-                {formatDiracState(currentState, 2)}
-              </span>
-            </div>
+            {activeTab === 'circuit' ? (
+              <div className="hidden sm:flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/30 font-mono text-xs">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span className="text-slate-400">Circuit:</span>
+                <span className="text-amber-300 font-semibold">
+                  VL = 5V (Superposition)
+                </span>
+              </div>
+            ) : (
+              <div className="hidden sm:flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 font-mono text-xs">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span className="text-slate-400">State:</span>
+                <span className="text-cyan-300 font-semibold max-w-[120px] truncate" title={formatDiracState(currentState, 3)}>
+                  {formatDiracState(currentState, 2)}
+                </span>
+              </div>
+            )}
 
             {/* Reset State Button */}
             <button

@@ -54,6 +54,7 @@ export interface ShotResult {
 export type ActiveTab = 
   | 'dashboard'
   | 'simulator'
+  | 'circuit'
   | 'gates'
   | 'measurement'
   | 'probability'
