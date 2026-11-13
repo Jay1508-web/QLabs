@@ -64,7 +64,14 @@
 - Normalization check: $|\alpha|^2 + |\beta|^2 = 1.00000$.
 - In-depth demonstration showing why **quantum superposition is wave interference, not classical randomness**.
 
-### F. Educational Hub & Knowledge Evaluation
+### F. Physical Electrical Control Circuit Simulation
+- **Superconducting Hardware Representation:** Interactive schematic containing a Room-Temperature Microwave AWG Generator ($5.0\text{ GHz}$), cryogenic coaxial line ($4.2\text{ K}$ and $15\text{ mK}$ attenuation stages), a $15\text{ mK}$ Transmon Qubit with Josephson junction ($\mathbf{\times}$), a Dispersive Readout CPW Resonator ($7.2\text{ GHz}$), HEMT amplifier, and a Classical Bit Register.
+- **Microwave Hadamard Pulse Operation:** Drives the transmon into equal superposition $|\psi\rangle = (|0\rangle + |1\rangle)/\sqrt{2}$ with 50%/50% probabilities and animated microwave signal flow.
+- **Dispersive Measurement & Wavefunction Collapse:** Mathematically rigorous Born-rule projective measurement latching the classical digital output to `0` or `1`.
+- **Quantum Interference Sequence ($H \to Z \to H \to \text{Measure}$):** Phase flipping via $Z$ leads to complete destructive cancellation of amplitude $|0\rangle$ and constructive reinforcement of amplitude $|1\rangle$, proving deterministic $100\%$ measurement of Bit 1.
+- **Hardware vs. Quantum State Clarification:** Explains that microwave lines and amplifiers are classical RF hardware, while superposition exists strictly in the quantized degrees of freedom of the transmon qubit.
+
+### G. Educational Hub & Knowledge Evaluation
 - **6 Comprehensive Textbook Chapters:**
   1. Classical Bit vs Qubit
   2. The Principle of Superposition
