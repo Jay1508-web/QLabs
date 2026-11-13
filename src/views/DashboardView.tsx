@@ -171,7 +171,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </h2>
           </div>
           <p className="text-xs text-slate-400 max-w-md">
-            Select between Quantum State Superposition in Hilbert Space and the Classical Superposition Theorem in Electrical Circuits.
+            Select between the 3D Bloch Sphere Simulator and the Physical Electrical Control Circuit Representation of Quantum Superposition.
           </p>
         </div>
 
@@ -231,45 +231,45 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </button>
           </div>
 
-          {/* Option 2: Circuit Simulation (Superposition Theorem) */}
+          {/* Option 2: Physical Electrical Control Circuit Simulation */}
           <div
             onClick={() => onNavigate('circuit')}
-            className="group relative rounded-2xl p-6 bg-slate-950/70 border border-amber-500/30 hover:border-amber-400 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-amber-500/10 flex flex-col justify-between gap-5"
+            className="group relative rounded-2xl p-6 bg-slate-950/70 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-cyan-500/10 flex flex-col justify-between gap-5"
           >
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-amber-500/10 text-amber-300 border border-amber-400/30">
-                  <Zap className="w-3.5 h-3.5" />
-                  Option 2: Circuit Simulation • New
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-400/30">
+                  <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                  Option 2: Circuit Hardware Representation
                 </span>
-                <span className="text-xs font-mono text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">
+                <span className="text-xs font-mono text-cyan-400 font-semibold group-hover:translate-x-1 transition-transform">
                   Launch ➔
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
-                Electrical Circuit Superposition Simulator
+              <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+                Quantum Superposition Through Electrical Circuits
               </h3>
 
               <p className="text-xs text-slate-300 leading-relaxed">
-                Demonstrate the fundamental Superposition Theorem in a two-source linear DC network (10V & 5V) 
-                across resistors (1kΩ, 2kΩ, 1kΩ load). Observe animated current flow, deactivate sources into short-circuits, 
-                and verify that VL = V1 + V2 = 4V + 1V = 5V.
+                Demonstrate quantum superposition through a realistic superconducting quantum computer circuit: 
+                microwave pulse synthesizer, electrical transmission lines, 15 mK transmon qubit, 
+                dispersive readout resonator, and quantum wave interference (H → Z → H).
               </p>
 
               {/* Feature Tags */}
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
-                  Dual DC Sources (10V & 5V)
+                  Microwave AWG Control (5 GHz)
                 </span>
                 <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
-                  Animated Current Flow
+                  15 mK Transmon Processor
                 </span>
                 <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
-                  Mode A, B & C Selection
+                  Dispersive Readout Resonator
                 </span>
                 <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono bg-slate-900 text-slate-300 border border-slate-800">
-                  VL = 4V + 1V = 5V Verified
+                  Quantum Interference (H-Z-H)
                 </span>
               </div>
             </div>
@@ -279,7 +279,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 e.stopPropagation();
                 onNavigate('circuit');
               }}
-              className="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-slate-950 shadow-md shadow-amber-500/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-md shadow-cyan-500/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
             >
               <Zap className="w-4 h-4 fill-current" />
               <span>Open Circuit Superposition Simulation</span>

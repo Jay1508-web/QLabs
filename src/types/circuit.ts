@@ -1,25 +1,32 @@
-// Circuit Superposition Simulator Types
+// Quantum Superposition Through Electrical Circuits - Types
 
-export type CircuitMode = 'source1' | 'source2' | 'both';
+import { QubitState } from './quantum';
 
-export interface CircuitBranchReadings {
-  v1Active: boolean;
-  v2Active: boolean;
-  v1Voltage: number;    // Volts
-  v2Voltage: number;    // Volts
-  vL: number;           // Load Voltage (V)
-  iL: number;           // Load Current (mA)
-  i1: number;           // Branch 1 Current (mA)
-  i2: number;           // Branch 2 Current (mA)
-  powerL: number;       // Load Power (mW)
-  mode: CircuitMode;
-  modeLabel: string;
+export type PulseType = 'none' | 'hadamard' | 'pauliZ' | 'pauliX' | 'readout';
+
+export interface QuantumCircuitHardwareState {
+  // Qubit state
+  qubitState: QubitState;
+  
+  // Physical hardware telemetry
+  microwaveFrequencyGhz: number;   // e.g. 5.0 GHz (qubit transition f01)
+  readoutFrequencyGhz: number;     // e.g. 7.2 GHz (resonator frequency fr)
+  cryoTemperatureMk: number;       // e.g. 15 mK
+  drivePowerDbm: number;           // e.g. -45 dBm at chip
+  
+  // Active animation / pulse states
+  activePulse: PulseType;
+  isPulseAnimating: boolean;
+  isMeasuring: boolean;
+  
+  // Measurement results
+  lastMeasurement: 0 | 1 | null;
+  measurementCount: number;
+  history0: number;
+  history1: number;
+  
+  // Interference experiment sequence
+  interferenceStep: number;        // 0: Initial, 1: After H, 2: After Z, 3: After H2, 4: Measured
 }
 
-export interface CircuitVerificationData {
-  source1: CircuitBranchReadings;
-  source2: CircuitBranchReadings;
-  both: CircuitBranchReadings;
-  voltageSumVerified: boolean;
-  currentSumVerified: boolean;
-}
+export type CircuitExperimentMode = 'superposition' | 'interference';

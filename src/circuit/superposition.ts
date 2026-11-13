@@ -1,100 +1,130 @@
-import { CircuitMode, CircuitBranchReadings, CircuitVerificationData } from '../types/circuit';
+// Quantum Superposition Through Electrical Circuits - Logic & Simulation
 
-export const CIRCUIT_CONSTANTS = {
-  V1_NOMINAL: 10,     // 10 Volts DC
-  V2_NOMINAL: 5,      // 5 Volts DC
-  R1: 1000,           // 1 kOhm
-  R2: 2000,           // 2 kOhm
-  RL: 1000            // 1 kOhm load
+import { QubitState, MeasurementResult } from '../types/quantum';
+import { STATE_ZERO, STATE_ONE, STATE_PLUS, STATE_MINUS, getProbabilities } from '../quantum/state';
+import { HADAMARD_GATE, PAULI_Z_GATE, PAULI_X_GATE, applyGate } from '../quantum/gates';
+import { measureQubit } from '../quantum/measurement';
+import { PulseType } from '../types/circuit';
+
+export const HARDWARE_SPEC = {
+  QUBIT_TYPE: 'Superconducting Transmon Qubit',
+  TRANSITION_FREQ_GHZ: 5.0,        // f01 = 5.0 GHz
+  READOUT_FREQ_GHZ: 7.2,           // fr = 7.2 GHz
+  DISPERSIVE_SHIFT_MHZ: 1.8,       // chi/2pi = 1.8 MHz
+  BASE_TEMPERATURE_MK: 15,         // 15 mK in Dilution Refrigerator Mixing Chamber
+  ATTENUATION_DB: 60,              // Total attenuation from 300K to 15mK
+  JOSEPHSON_ENERGY_EJ_GHZ: 15.5,   // Ej
+  CHARGING_ENERGY_EC_MHZ: 280,     // Ec
+  PULSE_DURATION_NS: 20,           // 20 ns microwave pulse
 };
 
 /**
- * Computes nodal voltages and branch currents for the two-source bridge network.
- * Node equation at Node L (voltage across load RL):
- * (V1 - VL)/R1 + (V2 - VL)/R2 = VL/RL
- * 
- * Multiplying by 2000 (LCM of 1000, 2000, 1000):
- * 2*(V1 - VL) + (V2 - VL) = 2*VL
- * 2*V1 - 2*VL + V2 - VL = 2*VL
- * 2*V1 + V2 = 5*VL
- * VL = (2*V1 + V2) / 5
+ * Applies a microwave control pulse to the transmon qubit.
  */
-export function computeCircuitReadings(v1Active: boolean, v2Active: boolean): CircuitBranchReadings {
-  const v1 = v1Active ? CIRCUIT_CONSTANTS.V1_NOMINAL : 0;
-  const v2 = v2Active ? CIRCUIT_CONSTANTS.V2_NOMINAL : 0;
-
-  // Node voltage VL
-  const vL = (2 * v1 + v2) / 5;
-
-  // Load current IL in mA (V / 1000 ohm * 1000 mA/A = V mA)
-  const iL = (vL / CIRCUIT_CONSTANTS.RL) * 1000;
-
-  // Branch 1 current in mA flowing from V1 to Node L
-  const i1 = ((v1 - vL) / CIRCUIT_CONSTANTS.R1) * 1000;
-
-  // Branch 2 current in mA flowing from V2 to Node L
-  const i2 = ((v2 - vL) / CIRCUIT_CONSTANTS.R2) * 1000;
-
-  // Load Power in mW (P = V * I)
-  const powerL = vL * iL;
-
-  let mode: CircuitMode = 'both';
-  let modeLabel = 'Mode C: Both Sources Active';
-
-  if (v1Active && !v2Active) {
-    mode = 'source1';
-    modeLabel = 'Mode A: First Source Active (10V)';
-  } else if (!v1Active && v2Active) {
-    mode = 'source2';
-    modeLabel = 'Mode B: Second Source Active (5V)';
-  } else if (!v1Active && !v2Active) {
-    mode = 'both';
-    modeLabel = 'All Sources Deactivated (0V)';
-  }
-
-  return {
-    v1Active,
-    v2Active,
-    v1Voltage: v1,
-    v2Voltage: v2,
-    vL: Number(vL.toFixed(3)),
-    iL: Number(iL.toFixed(3)),
-    i1: Number(i1.toFixed(3)),
-    i2: Number(i2.toFixed(3)),
-    powerL: Number(powerL.toFixed(3)),
-    mode,
-    modeLabel
-  };
-}
-
-export function getCircuitReadingsForMode(mode: CircuitMode): CircuitBranchReadings {
-  switch (mode) {
-    case 'source1':
-      return computeCircuitReadings(true, false);
-    case 'source2':
-      return computeCircuitReadings(false, true);
-    case 'both':
+export function applyMicrowaveControlPulse(
+  pulse: PulseType, 
+  state: QubitState
+): { nextState: QubitState; description: string } {
+  switch (pulse) {
+    case 'hadamard': {
+      const nextState = applyGate(HADAMARD_GATE, state);
+      return {
+        nextState,
+        description: 'Microwave π/2 pulse applied at 5.0 GHz. Creates equal quantum superposition (|0⟩ + |1⟩)/√2.'
+      };
+    }
+    case 'pauliZ': {
+      const nextState = applyGate(PAULI_Z_GATE, state);
+      return {
+        nextState,
+        description: 'Virtual-Z microwave phase pulse applied. Shifts relative phase of |1⟩ by π radians.'
+      };
+    }
+    case 'pauliX': {
+      const nextState = applyGate(PAULI_X_GATE, state);
+      return {
+        nextState,
+        description: 'Microwave resonant π-pulse applied. Flips the computational state |0⟩ ↔ |1⟩.'
+      };
+    }
     default:
-      return computeCircuitReadings(true, true);
+      return {
+        nextState: { ...state },
+        description: 'Qubit in idle state.'
+      };
   }
 }
 
-export function getSuperpositionVerification(): CircuitVerificationData {
-  const s1 = computeCircuitReadings(true, false);
-  const s2 = computeCircuitReadings(false, true);
-  const both = computeCircuitReadings(true, true);
-
-  const voltageSum = s1.vL + s2.vL;
-  const currentSum = s1.iL + s2.iL;
-
-  const voltageSumVerified = Math.abs(voltageSum - both.vL) < 1e-4;
-  const currentSumVerified = Math.abs(currentSum - both.iL) < 1e-4;
-
-  return {
-    source1: s1,
-    source2: s2,
-    both,
-    voltageSumVerified,
-    currentSumVerified
-  };
+/**
+ * Performs circuit measurement via dispersive readout resonator.
+ */
+export function executeCircuitMeasurement(state: QubitState): MeasurementResult {
+  return measureQubit(state);
 }
+
+/**
+ * Step definitions for the advanced Quantum Interference sequence: H → Z → H → Measurement.
+ */
+export interface InterferenceStepInfo {
+  step: number;
+  label: string;
+  gateSymbol: string;
+  actionText: string;
+  theoreticalState: string;
+  prob0: number;
+  prob1: number;
+  explanation: string;
+}
+
+export const INTERFERENCE_STEPS: InterferenceStepInfo[] = [
+  {
+    step: 0,
+    label: 'Initial State',
+    gateSymbol: 'INIT',
+    actionText: 'Qubit thermalized to cryogenic ground state |0⟩',
+    theoreticalState: '|0⟩',
+    prob0: 1.0,
+    prob1: 0.0,
+    explanation: 'At 15 mK, thermal energy k_B·T is much smaller than the qubit transition energy ℏω_01 (15 mK ≈ 0.3 GHz ≪ 5.0 GHz). The transmon relaxes naturally into the ground state |0⟩.'
+  },
+  {
+    step: 1,
+    label: 'First Hadamard Pulse (H)',
+    gateSymbol: 'H',
+    actionText: 'Apply microwave π/2 pulse (Hadamard operation)',
+    theoreticalState: '(|0⟩ + |1⟩)/√2',
+    prob0: 0.5,
+    prob1: 0.5,
+    explanation: 'The microwave pulse creates a coherent 50/50 superposition (|0⟩ + |1⟩)/√2. Measuring now would yield 0 or 1 with equal 50% probability.'
+  },
+  {
+    step: 2,
+    label: 'Pauli-Z Phase Shift (Z)',
+    gateSymbol: 'Z',
+    actionText: 'Apply microwave phase rotation pulse (π phase flip on |1⟩)',
+    theoreticalState: '(|0⟩ - |1⟩)/√2',
+    prob0: 0.5,
+    prob1: 0.5,
+    explanation: 'The Z operation introduces a relative phase of π between the basis states: α = 1/√2, β = -1/√2. Crucially, the measurement probabilities remain 50% / 50%, but the phase holds hidden quantum information.'
+  },
+  {
+    step: 3,
+    label: 'Second Hadamard Pulse (H)',
+    gateSymbol: 'H',
+    actionText: 'Apply second microwave π/2 pulse (Quantum Interference)',
+    theoreticalState: '|1⟩',
+    prob0: 0.0,
+    prob1: 1.0,
+    explanation: 'Interference occurs! The amplitude for |0⟩ destructively interferes: (1/√2)(1/√2) + (-1/√2)(1/√2) = 1/2 - 1/2 = 0. The amplitude for |1⟩ constructively interferes: (1/√2)(1/√2) - (-1/√2)(1/√2) = 1/2 + 1/2 = 1.0! The state becomes deterministically |1⟩.'
+  },
+  {
+    step: 4,
+    label: 'Dispersive Readout (Measure)',
+    gateSymbol: 'M',
+    actionText: 'Dispersive microwave readout tone sent through resonator',
+    theoreticalState: '|1⟩ (Measured)',
+    prob0: 0.0,
+    prob1: 1.0,
+    explanation: 'Dispersive readout detects the frequency shift of the readout resonator. Because the interference was constructive at |1⟩, the classical digital bit registers 1 with 100% certainty!'
+  }
+];

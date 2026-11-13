@@ -93,11 +93,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-2.5">
             {/* Quick State Pill */}
             {activeTab === 'circuit' ? (
-              <div className="hidden sm:flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/30 font-mono text-xs">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <div className="hidden sm:flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-cyan-500/30 font-mono text-xs">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                 <span className="text-slate-400">Circuit:</span>
-                <span className="text-amber-300 font-semibold">
-                  VL = 5V (Superposition)
+                <span className="text-cyan-300 font-semibold">
+                  15 mK Transmon Qubit
                 </span>
               </div>
             ) : (
